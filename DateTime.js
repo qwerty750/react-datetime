@@ -42,7 +42,9 @@ var Datetime = createClass({
 		open: TYPES.bool,
 		strictParsing: TYPES.bool,
 		closeOnSelect: TYPES.bool,
-		closeOnTab: TYPES.bool
+		closeOnTab: TYPES.bool,
+		showUpdateToCurrentTime: TYPES.bool,
+		showClearTime: TYPES.bool
 	},
 
 	getInitialState: function() {
@@ -313,6 +315,30 @@ var Datetime = createClass({
 		this.props.onChange( date );
 	},
 
+	setExactDate: function( date, close ) {
+		var d = this.state.viewDate.clone()
+			.month(date.getMonth())
+			.date(date.getDate())
+			.year(date.getFullYear())
+			.hours(date.getHours())
+			.minutes(date.getMinutes())
+			.seconds(date.getSeconds())
+			.milliseconds(date.getMilliseconds());
+
+		this.updateDate(d, close);
+	},
+
+	clearDate: function(close) {
+		var update = { inputValue: '' };
+		this.setState( update, function() {
+			return this.props.onChange( '' );
+		});
+
+		if ( this.props.closeOnSelect && close ) {
+			this.closeCalendar();
+		}
+	},
+
 	updateSelectedDate: function( e, close ) {
 		var target = e.currentTarget,
 			modifier = 0,
@@ -346,6 +372,10 @@ var Datetime = createClass({
 			.seconds( currentDate.seconds() )
 			.milliseconds( currentDate.milliseconds() );
 
+		this.updateDate(date, close);
+	},
+
+	updateDate: function(date, close) {
 		if ( !this.props.value ) {
 			var open = !( this.props.closeOnSelect && close );
 			if ( !open ) {
@@ -416,9 +446,9 @@ var Datetime = createClass({
 	},
 
 	componentProps: {
-		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints'],
+		fromProps: ['value', 'isValidDate', 'renderDay', 'renderMonth', 'renderYear', 'timeConstraints', 'showClearTime', 'showUpdateToCurrentTime'],
 		fromState: ['viewDate', 'selectedDate', 'updateOn'],
-		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'handleClickOutside']
+		fromThis: ['setDate', 'setTime', 'showView', 'addTime', 'subtractTime', 'updateSelectedDate', 'localMoment', 'handleClickOutside', 'setExactDate', 'clearDate']
 	},
 
 	getComponentProps: function() {
@@ -528,7 +558,10 @@ Datetime.defaultProps = {
 	strictParsing: true,
 	closeOnSelect: false,
 	closeOnTab: true,
-	utc: false
+	utc: false,
+	showUpdateToMidnight: false,
+	showUpdateToCurrentTime: false,
+	showClearTime: false
 };
 
 // Make moment accessible through the Datetime class

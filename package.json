@@ -87,7 +87,6 @@
   },
   "pre-commit": [
     "notify-pre-commit-hook",
-    "lint",
-    "test:all"
+    "lint"
   ]
 }

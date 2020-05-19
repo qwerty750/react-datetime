@@ -1,8 +1,9 @@
 'use strict';
 
 var React = require('react'),
-	createClass = require('create-react-class')
-;
+	createClass = require('create-react-class'),
+	AdditionalControls = require('./AdditionalControls')
+	;
 
 var DateTimePickerMonths = createClass({
 	render: function() {
@@ -12,8 +13,22 @@ var DateTimePickerMonths = createClass({
 				React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2, 'data-value': this.props.viewDate.year() }, this.props.viewDate.year() ),
 				React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 1, 'years' )}, React.createElement('span', {}, '›' ))
 			]))),
-			React.createElement('table', { key: 'months' }, React.createElement('tbody', { key: 'b' }, this.renderMonths()))
+			React.createElement('table', { key: 'months' },
+				[
+					React.createElement('tbody', { key: 'b' }, this.renderMonths()),
+					this.createFooter()
+				]
+			),
 		]);
+	},
+
+	createFooter: function() {
+		return React.createElement('tfoot', {key: 'tf'},
+			React.createElement('tr', {},
+				React.createElement('td', {colSpan: 7, className: 'ha'},
+					React.createElement('div', {className: 'flexRow'},
+						React.createElement(AdditionalControls, this.props))))
+		);
 	},
 
 	renderMonths: function() {

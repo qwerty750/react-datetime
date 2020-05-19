@@ -2,7 +2,8 @@
 
 var React = require('react'),
 	createClass = require('create-react-class'),
-	moment = require('moment')
+	moment = require('moment'),
+	AdditionalControls = require('./AdditionalControls')
 	;
 
 var DateTimePickerDays = createClass({
@@ -118,17 +119,38 @@ var DateTimePickerDays = createClass({
 		return React.createElement('td',  props, currentDate.date() );
 	},
 
+	updateToCurrentTime: function(event) {
+		this.props.updateToCurrentTime( event, true );
+	},
+
 	renderFooter: function() {
-		if ( !this.props.timeFormat )
-			return '';
+		var footerItems = [];
 
-		var date = this.props.selectedDate || this.props.viewDate;
+		if (this.props.timeFormat) {
+			var date = this.props.selectedDate || this.props.viewDate;
 
-		return React.createElement('tfoot', { key: 'tf'},
-			React.createElement('tr', {},
-				React.createElement('td', { onClick: this.props.showView( 'time' ), colSpan: 7, className: 'rdtTimeToggle' }, date.format( this.props.timeFormat ))
-			)
-		);
+			var timeFormat =
+				React.createElement('div', {
+					key: 'dvfi0',
+					onClick: this.props.showView('time'),
+					className: 'rdtTimeToggle flex10'
+				}, date.format(this.props.timeFormat)
+				);
+
+			footerItems.push(timeFormat);
+		}
+
+		var additionalControls = React.createElement(AdditionalControls, Object.assign({}, this.props, { key: 'dvfi1' }));
+		footerItems.push(additionalControls);
+
+		if (footerItems.length > 0) {
+			return React.createElement('tfoot', {key: 'tf'},
+				React.createElement('tr', {},
+					React.createElement('td', {colSpan: 7, className: 'ha'},
+						React.createElement('div', {className: 'flexRow'},
+							footerItems)))
+			);
+		}
 	},
 
 	alwaysValidDate: function() {

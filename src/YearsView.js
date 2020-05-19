@@ -1,8 +1,9 @@
 'use strict';
 
 var React = require('react'),
-	createClass = require('create-react-class')
-;
+	createClass = require('create-react-class'),
+	AdditionalControls = require('./AdditionalControls')
+	;
 
 var DateTimePickerYears = createClass({
 	render: function() {
@@ -14,7 +15,12 @@ var DateTimePickerYears = createClass({
 				React.createElement('th', { key: 'year', className: 'rdtSwitch', onClick: this.props.showView( 'years' ), colSpan: 2 }, year + '-' + ( year + 9 ) ),
 				React.createElement('th', { key: 'next', className: 'rdtNext', onClick: this.props.addTime( 10, 'years' )}, React.createElement('span', {}, '›' ))
 			]))),
-			React.createElement('table', { key: 'years' }, React.createElement('tbody',  {}, this.renderYears( year )))
+			React.createElement('table', { key: 'years' },
+				[
+					React.createElement('tbody',  {key: 'b'}, this.renderYears( year )),
+					this.createFooter()
+				]
+			)
 		]);
 	},
 
@@ -95,6 +101,15 @@ var DateTimePickerYears = createClass({
 	alwaysValidDate: function() {
 		return 1;
 	},
+
+	createFooter: function() {
+		return React.createElement('tfoot', {key: 'tf'},
+			React.createElement('tr', {},
+				React.createElement('td', {colSpan: 7, className: 'ha'},
+					React.createElement('div', {className: 'flexRow'},
+						React.createElement(AdditionalControls, this.props))))
+		);
+	}
 });
 
 module.exports = DateTimePickerYears;

@@ -2,7 +2,8 @@
 
 var React = require('react'),
 	createClass = require('create-react-class'),
-	assign = require('object-assign')
+	assign = require('object-assign'),
+	AdditionalControls = require('./AdditionalControls')
 	;
 
 var DateTimePickerTime = createClass({
@@ -103,7 +104,8 @@ var DateTimePickerTime = createClass({
 				this.renderHeader(),
 				React.createElement('tbody', { key: 'b'}, React.createElement('tr', {}, React.createElement('td', {},
 					React.createElement('div', { className: 'rdtCounters' }, counters )
-				)))
+				))),
+				this.createFooter()
 			])
 		);
 	},
@@ -227,6 +229,15 @@ var DateTimePickerTime = createClass({
 			str = '0' + str;
 		return str;
 	},
+
+	createFooter: function() {
+		return React.createElement('tfoot', {key: 'tf'},
+			React.createElement('tr', {},
+				React.createElement('td', {colSpan: 7, className: 'ha'},
+					React.createElement('div', {className: 'flexRow'},
+						React.createElement(AdditionalControls, this.props))))
+		);
+	}
 });
 
 module.exports = DateTimePickerTime;

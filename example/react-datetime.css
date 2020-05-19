@@ -46,6 +46,7 @@
   cursor: pointer;
 }
 .rdtPicker td.rdtToday:hover,
+.rdtPicker .rdtAddAct-item:hover,
 .rdtPicker td.rdtHour:hover,
 .rdtPicker td.rdtMinute:hover,
 .rdtPicker td.rdtSecond:hover,
@@ -224,4 +225,33 @@ td.rdtYear:hover {
 
 .rdtTime td {
   cursor: default;
+}
+
+.inlineBlock {
+  display: inline-block;
+  margin-left: 4px;
+}
+
+.flex10 {
+  flex: 1 0;
+}
+
+.flexRow {
+  display: flex;
+  flex-direction: row;
+}
+
+.rdtAddAct {
+  flex: 1 0;
+  text-align: right;
+  cursor: default;
+}
+
+.rdtAddAct-item {
+  margin-right: 4px;
+  display: inline-block;
+}
+
+.rdtPicker .ha {
+  height: auto;
 }
